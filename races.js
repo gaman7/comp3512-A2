@@ -1,5 +1,5 @@
 const API_DOMAIN = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";  
-  
+ //function to load races for selected season 
 async function loadRaces() {  
   const selectedSeason = sessionStorage.getItem("selectedSeason");  
   if (!selectedSeason) {  
@@ -93,7 +93,7 @@ function isFavorite(type, id) {
 function capitalizeFirstLetter(string) {  
   return string.charAt(0).toUpperCase() + string.slice(1);  
 }  
-  
+ // updating table to reflect latest data 
 function updateTables() {  
   const raceId = sessionStorage.getItem("raceId");  
   if (raceId) {  
@@ -106,7 +106,7 @@ function updateTables() {
    renderResultsTable(raceId, results, podiumFixed, circuitName);  
   }  
 }  
-  
+  //Function to render qualifying data
 function renderQualifyingTable(raceId, qualifying, circuitName) {  
   const qualifyingContainer = document.getElementById("qualifyingContainer");  
   qualifyingContainer.innerHTML = `  
@@ -161,22 +161,26 @@ function renderQualifyingTable(raceId, qualifying, circuitName) {
    </table>  
   `;  
 }  
-  
+  // render race results table and podium
 function renderResultsTable(raceId, results, podiumFixed, circuitName) {  
   const resultsContainer = document.getElementById("other-results");  
   const podium = document.querySelector('.podium');  
-  podium.innerHTML = '';  
+  podium.innerHTML = ''; 
+  //iterate through the fixed podium results and display them 
   podiumFixed.forEach((result) => {  
    const isFavDriver = isFavorite('driver', result.driver.id);  
    const driverStar = isFavDriver ? '★' : '☆';  
    const box = document.createElement('div');  
    box.classList.add('race-card', result.position === 1 ? 'first' : result.position === 2 ? 'second' : 'third');  
+   //Add the driver name, star (favourite indicator), and position
    box.innerHTML = `  
     <span onclick="toggleFavorite('driver', ${result.driver.id});" style="cursor:pointer;">${driverStar}</span>  
     ${result.driver.forename} ${result.driver.surname} <br><br/> ${result.position} ${result.position === 1 ? 'ST' : result.position === 2 ? 'ND' : 'RD'}  
-   `;  
+   `; 
+   //Append the box to the podium container 
    podium.appendChild(box);  
   });  
+  //render the race results table
   resultsContainer.innerHTML = `  
    <h2>Race Results</h2>  
    <table>  
@@ -228,7 +232,7 @@ function renderResultsTable(raceId, results, podiumFixed, circuitName) {
   `;  
 }
 
-  
+  //function to sort table
 function sortTable(storageKey, columnKey) {  
   // Retrieve the data from sessionStorage  
   const data = JSON.parse(sessionStorage.getItem(storageKey));  
@@ -261,10 +265,10 @@ function sortTable(storageKey, columnKey) {
   } else if (storageKey.startsWith("results")) {  
    renderResultsTable(storageKey.split("_")[1], sortedData, fixedPodium, circuitName);  
   }  
-  
+  //update the sort icons to reflect the new order
   updateSortIcons(storageKey, columnKey, newOrder);  
 }  
-  
+  //function to update sort icons(arrows) in table 
 function updateSortIcons(storageKey, columnKey, newOrder) {  
   // Get all table header elements  
   const headers = document.querySelectorAll(th[onclick="sortTable('${storageKey}', '${columnKey}')"]);  
@@ -282,7 +286,7 @@ function updateSortIcons(storageKey, columnKey, newOrder) {
    }  
   });  
 }  
-  
+// function to get sortable values based on the column  
 function getSortableValue(item, key) {  
   // Handle custom keys for driverName and constructorName  
   if (key === "driverName") {  
