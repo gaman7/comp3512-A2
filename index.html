@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>F1 Dashboard Project</title>
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/browse.css">
+  <link rel="stylesheet" href="styles/constructors.css">
+  <link rel="stylesheet" href="styles/drivers.css">
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <header>
+        <img onclick="showHomeView()" src="Images/newlogo.png" alt="Logo" class="logo">
+        <h1>F1 Dashboard Project</h1>
+      </header>
+    </nav>
+
+    <!-- Home View -->
+    <div id="homeView" class="view active">
+      <div class="hero-section features-grid">
+        <div class="hero-content feature-card">
+          <p>
+            Welcome to the F1 Dashboard! This site provides detailed information on Formula 1 seasons, races, drivers, constructors, and circuits.
+          </p>
+          <p>
+            Technologies used: <strong><br/>
+              JavaScript<br/> HTML<br/>CSS<br/>and the Fetch API.</strong>
+          </p>
+          <p>
+            Developed by: <strong>Gamanpreet Kaur</strong> and  <strong>Uday Partap Sidhu</strong>
+          </p>
+          <p>
+            View the project source code on <a href="#" target="_blank">GitHub</a>.
+          </p>
+          <label for="seasonSelect"><b>Season</b></label>
+          <br>
+          <select id="seasonSelect">
+            <option value="" disabled selected>Select season</option>
+          </select>
+          <button id="goButton" class="btn-cta" onclick="handleGoButtonClick()">Go</button>
+          
+
+        </div>
+        <div class="feature-card">
+          <img src="Images/constructor.jpg" alt="">
+        </div>
+      </div>
+    </div>
+
+    <!-- Races View -->
+    <div id="racesView" class="view">
+      <main class="hero-section race-grid">
+        <section id="races">
+          <h2 id="race_title">2023 Races</h2>
+          <ul id="racesList">
+            <li>Loading races...</li>
+          </ul>
+        </section>
+
+        <section id="qualifyingContainer" class="race-results">
+            <h2>Qualifying Results</h2>
+            <p>Please select a race to view its qualifying results.</p>
+          </section>
+        
+          <section id="resultsContainer">
+            <h2>Race Results</h2>
+            <div class="podium race-grid">
+            
+              <!-- Top 3 finishers will be displayed here -->
+            </div>
+            <div id="other-results" class="race-results">
+              <p>Please select a race to view its race results.</p>
+            </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <dialog id="driverModal" class="modal">
+    <div class="modal-content constructor-details">
+      <button class="close" onclick="closeModal('driverModal')" aria-label="Close">&times;</button>
+      <h3 id="driverModalTitle">Driver Details</h3>
+      <div id="driverDetails" class="driver-info">
+        <div class="driver-bio">
+          <img class="constructor-photo" id="driverImage" alt="Driver Image" src="Images/driver.jpg" />
+          <ul>
+            <li><strong>Name:</strong> <span id="driverName">Loading...</span></li>
+            <li><strong>DOB:</strong> <span id="driverDOB">Loading...</span></li>
+            <li><strong>Age:</strong> <span id="driverAge">Loading...</span></li>
+            <li><strong>Nationality:</strong> <span id="driverNationality">Loading...</span></li>
+            <li><strong>More Info:</strong> <a id="driverURL" href="#" target="_blank">View Profile</a></li>
+          </ul>
+        </div>
+        <div class="driver-results">
+          <h4>Race Results</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Rnd</th>
+                <th>Name</th>
+                <th>Pos</th>
+                <th>Points/Qualifying Time</th>
+              </tr>
+            </thead>
+            <tbody id="driverResults">
+              <tr>
+                <td colspan="4">Loading results...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <button onclick="closeModal('driverModal')">Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="constructorModal" class="modal"></div>
+    <div class="modal-content constructor-details">
+      <span class="close" onclick="closeModal('constructorModal')">&times;</span>
+      <h3>Constructor Details</h3>
+      <div class="constructor_info race-grid">
+      <div class="constructor_bio">
+        <p><strong>Name:</strong> <span id="constructorName">Loading...</span></p>
+        <p><strong>Nationality:</strong> <span id="constructorNationality">Loading...</span></p>
+        <p><strong>More Info:</strong> <a id="constructorURL" href="#" target="_blank">Loading...</a></p>
+      </div>
+      <div>
+      <h3>Race Results</h3>
+      <div class="table-container race-results">
+      <table>
+        <thead>
+          <tr>
+            <th>Rnd</th>
+            <th>Name</th>
+            <th>Driver</th>
+            <th>Pos</th>
+          </tr>
+        </thead>
+        <tbody id="constructorResults">
+          <tr><td colspan="4">Loading results...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+    </div>
+      <button onclick="closeModal('constructorModal')">Close</button>
+    </div>
+  </dialog>
+
+   <!-- Circuit Details Modal -->
+<dialog id="circuit-modal" class="modal">
+  
+    <div class="modal-content constructor-details">
+  
+      <span id="circuit-modal-close" class="close">&times;</span>
+      <h1 style="text-align: center;">Circuit Details</h1>
+      <div class="constructor_info race-grid">
+      <div class="constructor_bio">
+      <div id="circuit-image">
+        <img class="constructor-photo" src="https://placehold.co/600x400?text=Circuit" alt="Circuit Image" />
+      </div>
+      </div>
+      <div>
+      <h2 id="circuit-name">Circuit Name</h2>
+      <p><strong>Location:</strong> <span id="circuit-location">Location</span></p>
+      <p><strong>Country:</strong> <span id="circuit-country">Country</span></p>
+      <p><strong>More Info:</strong> <a id="circuit-url" href="#" target="_blank">Wikipedia</a></p>
+    </div>
+    <button onclick="closeModal('circuit-modal')">Close</button>
+    </div>
+    
+    
+
+
+</dialog>
+<script>
+    
+</script>
+  <script src="home.js"></script>
+  <script src="races.js"></script>
+</body>
+</html>
